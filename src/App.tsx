@@ -13,6 +13,7 @@ import { UserProfile } from './pages/profile/UserProfile'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { EditProfile } from './components/profile/EditProfile'
+import { StoresManagement } from './pages/stores/StoresManagement'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -93,6 +94,17 @@ function App() {
             <Navbar />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <EditProfile />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      case '/stores':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <StoresManagement />
             </main>
             <Footer />
           </ProtectedRoute>

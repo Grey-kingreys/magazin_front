@@ -185,7 +185,7 @@ export function Navbar() {
                                         <a href="/users" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             👥 Utilisateurs
                                         </a>
-                                        <a href="#magasins" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                        <a href="/stores" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             🏪 Magasins
                                         </a>
                                         <a href="#rapports" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">

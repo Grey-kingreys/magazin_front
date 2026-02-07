@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { userService } from '../../services/api.service'
+import { storeService } from '../../services/store.service'
 
 interface User {
     id: string
