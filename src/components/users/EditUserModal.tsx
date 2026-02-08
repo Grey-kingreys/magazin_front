@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { userService } from '../../services/api.service'
-import { storeService } from '../../services/store.service'
 
 interface User {
     id: string
@@ -41,11 +40,11 @@ export function EditUserModal({ user, onClose, onSuccess }: EditUserModalProps) 
     const fetchStores = async () => {
         try {
             const token = localStorage.getItem('access_token')
-            const response = await fetch('http://localhost:3000/stores', {
+            const response = await fetch('http://localhost:3000/store', {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
             const data = await response.json()
-            if (data.success) setStores(data.data)
+            if (data.success) setStores(data.data.stores)
         } catch (error) {
             console.error('Erreur:', error)
         }
