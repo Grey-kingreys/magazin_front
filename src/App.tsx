@@ -22,6 +22,8 @@ import { SuppliersManagement } from './pages/suppliers/SuppliersManagement'
 // Produits et Stocks
 import { ProductsManagement } from './pages/products/ProductsManagement'
 import { StocksManagement } from './pages/stocks/StocksManagement'
+import { StockMovementsManagement } from './pages/stock-movements/StockMovementsManagement'
+import { SalesManagement } from './pages/sales/SalesManagement'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -162,6 +164,31 @@ function App() {
             <Navbar />
             <main>
               <StocksManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+        //Stock movements
+      case '/stock-movements':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <StockMovementsManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+        //Ventes
+
+      case '/ventes':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <SalesManagement />
             </main>
             <Footer />
           </ProtectedRoute>
