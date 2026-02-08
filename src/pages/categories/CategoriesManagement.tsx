@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { theme } from '../../theme/theme'
 import { categoryService } from '../../services/category.service'
-import { DeleteConfirmModal } from '../../components/modals/DeleteConfirmModal'
-import { CategoryForm } from './CategoryForm'
+import { CategoryForm } from '../../components/categories/CategoryForm'
+import { CategoryDetailsModal } from '../../components/categories/CategoryDetailsModal'
+import { DeleteCategoryModal } from '../../components/categories/DeleteCategoryModal'
 
 interface Category {
     id: string
@@ -39,6 +40,7 @@ export function CategoriesManagement() {
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showDetailsModal, setShowDetailsModal] = useState(false)
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
     const [deleteLoading, setDeleteLoading] = useState(false)
 
@@ -87,6 +89,11 @@ export function CategoriesManagement() {
     const handleEdit = (category: Category) => {
         setSelectedCategory(category)
         setShowEditModal(true)
+    }
+
+    const handleViewDetails = (category: Category) => {
+        setSelectedCategory(category)
+        setShowDetailsModal(true)
     }
 
     const handleDeleteClick = (category: Category) => {
@@ -360,6 +367,16 @@ export function CategoriesManagement() {
                                         <td className="px-6 py-4">
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
+                                                    onClick={() => handleViewDetails(category)}
+                                                    className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition"
+                                                    title="Voir détails"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                </button>
+                                                <button
                                                     onClick={() => handleEdit(category)}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
                                                     title="Modifier"
@@ -434,14 +451,20 @@ export function CategoriesManagement() {
             )}
 
             {showDeleteModal && selectedCategory && (
-                <DeleteConfirmModal
+                <DeleteCategoryModal
                     isOpen={showDeleteModal}
                     onClose={() => setShowDeleteModal(false)}
                     onConfirm={handleDeleteConfirm}
-                    title="Supprimer la catégorie"
-                    message="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible."
-                    itemName={selectedCategory.name}
+                    category={selectedCategory}
                     loading={deleteLoading}
+                />
+            )}
+
+            {showDetailsModal && selectedCategory && (
+                <CategoryDetailsModal
+                    isOpen={showDetailsModal}
+                    onClose={() => setShowDetailsModal(false)}
+                    category={selectedCategory}
                 />
             )}
         </div>

@@ -5,9 +5,10 @@ import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
 import { Badge } from '../../components/ui/Badge'
 import { Input } from '../../components/ui/Input'
-import { CreateStoreModal } from '../../components/stores/CreateStoreModal'    
+import { CreateStoreModal } from '../../components/stores/CreateStoreModal'
 import { EditStoreModal } from '../../components/stores/EditStoreModal'
 import { StoreDetailsModal } from '../../components/stores/StoreDetailsModal'
+import { DeleteStoreModal } from '../../components/stores/DeleteStoreModal'
 
 interface Store {
     id: string
@@ -38,7 +39,12 @@ export function StoresManagement() {
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDetailsModal, setShowDetailsModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [selectedStore, setSelectedStore] = useState<Store | null>(null)
+
+    // Notifications
+    const [successMessage, setSuccessMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         loadStores()
@@ -70,27 +76,32 @@ export function StoresManagement() {
     }
 
     const handleToggleActive = async (storeId: string) => {
-        if (!confirm('Êtes-vous sûr de vouloir changer le statut de ce magasin ?')) return
-
         const response = await storeService.toggleActive(storeId)
         if (response.success) {
+            showSuccess('Statut du magasin modifié avec succès')
             loadStores()
             loadStats()
         } else {
-            alert(response.message)
+            showError(response.message)
         }
     }
 
-    const handleDelete = async (store: Store) => {
-        if (!confirm(`Êtes-vous sûr de vouloir supprimer le magasin "${store.name}" ?\n\nCette action est irréversible.`)) return
+    const handleDeleteClick = (store: Store) => {
+        setSelectedStore(store)
+        setShowDeleteModal(true)
+    }
 
-        const response = await storeService.deleteStore(store.id)
+    const handleDeleteConfirm = async () => {
+        if (!selectedStore) return
+
+        const response = await storeService.deleteStore(selectedStore.id)
         if (response.success) {
+            showSuccess('Magasin supprimé avec succès')
             loadStores()
             loadStats()
-            alert(response.message)
+            setShowDeleteModal(false)
         } else {
-            alert(response.message)
+            showError(response.message)
         }
     }
 
@@ -108,9 +119,20 @@ export function StoresManagement() {
         setShowCreateModal(false)
         setShowEditModal(false)
         setShowDetailsModal(false)
+        setShowDeleteModal(false)
         setSelectedStore(null)
         loadStores()
         loadStats()
+    }
+
+    const showSuccess = (message: string) => {
+        setSuccessMessage(message)
+        setTimeout(() => setSuccessMessage(''), 5000)
+    }
+
+    const showError = (message: string) => {
+        setErrorMessage(message)
+        setTimeout(() => setErrorMessage(''), 5000)
     }
 
     return (
@@ -137,6 +159,25 @@ export function StoresManagement() {
                             Nouveau Magasin
                         </Button>
                     </div>
+
+                    {/* Notifications */}
+                    {successMessage && (
+                        <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center gap-3">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {successMessage}
+                        </div>
+                    )}
+
+                    {errorMessage && (
+                        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-3">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {errorMessage}
+                        </div>
+                    )}
 
                     {/* Statistiques */}
                     {stats && (
@@ -343,14 +384,14 @@ export function StoresManagement() {
                                         <button
                                             onClick={() => handleToggleActive(store.id)}
                                             className={`px-3 py-2 text-sm font-medium rounded-lg transition ${store.isActive
-                                                    ? 'text-orange-600 bg-orange-50 hover:bg-orange-100'
-                                                    : 'text-green-600 bg-green-50 hover:bg-green-100'
+                                                ? 'text-orange-600 bg-orange-50 hover:bg-orange-100'
+                                                : 'text-green-600 bg-green-50 hover:bg-green-100'
                                                 }`}
                                         >
                                             {store.isActive ? 'Désactiver' : 'Activer'}
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(store)}
+                                            onClick={() => handleDeleteClick(store)}
                                             className="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition"
                                             disabled={store._count.users > 0 || store._count.stocks > 0 || store._count.sales > 0}
                                             title={store._count.users > 0 || store._count.stocks > 0 || store._count.sales > 0 ? 'Impossible de supprimer un magasin avec des données' : 'Supprimer'}
@@ -374,6 +415,14 @@ export function StoresManagement() {
             )}
             {showDetailsModal && selectedStore && (
                 <StoreDetailsModal store={selectedStore} onClose={handleModalClose} />
+            )}
+            {showDeleteModal && selectedStore && (
+                <DeleteStoreModal
+                    isOpen={showDeleteModal}
+                    onClose={() => setShowDeleteModal(false)}
+                    onConfirm={handleDeleteConfirm}
+                    store={selectedStore}
+                />
             )}
         </div>
     )

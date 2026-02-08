@@ -3,6 +3,9 @@ import { userService, authService } from '../../services/api.service'
 import { CreateUserModal } from '../../components/users/CreateUserModal'
 import { EditUserModal } from '../../components/users/EditUserModal'
 import { ChangePasswordModal } from '../../components/users/ChangePasswordModal'
+import { UserDetailsModal } from '../../components/users/UserDetailsModal'
+import { DeleteUserModal } from '../../components/users/DeleteUserModal'
+import { theme } from '../../theme/theme'
 
 interface User {
     id: string
@@ -50,7 +53,14 @@ export function UsersManagement() {
     const [showCreateModal, setShowCreateModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showPasswordModal, setShowPasswordModal] = useState(false)
+    const [showDetailsModal, setShowDetailsModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
+    const [deleteLoading, setDeleteLoading] = useState(false)
+
+    // Notifications
+    const [successMessage, setSuccessMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         fetchCurrentUser()
@@ -65,6 +75,7 @@ export function UsersManagement() {
             }
         } catch (error) {
             console.error('Erreur:', error)
+            showError('Erreur lors du chargement du profil')
         }
     }
 
@@ -80,6 +91,7 @@ export function UsersManagement() {
             if (statsRes.success) setStats(statsRes.data)
         } catch (error) {
             console.error('Erreur:', error)
+            showError('Erreur lors du chargement des données')
         } finally {
             setLoading(false)
         }
@@ -92,54 +104,60 @@ export function UsersManagement() {
     const handleToggleActive = async (userId: string, userName: string) => {
         // Empêcher l'admin de se désactiver lui-même
         if (isCurrentUser(userId)) {
-            alert('❌ Vous ne pouvez pas désactiver votre propre compte !')
+            showError('Vous ne pouvez pas désactiver votre propre compte !')
             return
         }
 
-        if (!confirm(`Êtes-vous sûr de vouloir changer le statut de "${userName}" ?`)) return
+        const confirmed = window.confirm(`Êtes-vous sûr de vouloir changer le statut de "${userName}" ?`)
+        if (!confirmed) return
 
-        const response = await userService.toggleActive(userId)
-        if (response.success) {
-            fetchData()
-        } else {
-            alert(response.message)
+        try {
+            const response = await userService.toggleActive(userId)
+            if (response.success) {
+                showSuccess(`Statut de ${userName} modifié avec succès`)
+                fetchData()
+            } else {
+                showError(response.message)
+            }
+        } catch (error) {
+            console.error('Erreur:', error)
+            showError('Erreur lors du changement de statut')
         }
     }
 
-    const handleDelete = async (userId: string, userName: string) => {
+    const handleDeleteClick = (user: User) => {
         // Empêcher l'admin de se supprimer lui-même
-        if (isCurrentUser(userId)) {
-            alert('❌ Vous ne pouvez pas supprimer votre propre compte !')
+        if (isCurrentUser(user.id)) {
+            showError('Vous ne pouvez pas supprimer votre propre compte !')
             return
         }
 
-        const confirmed = confirm(
-            `⚠️ ATTENTION : Suppression définitive\n\n` +
-            `Êtes-vous sûr de vouloir supprimer l'utilisateur "${userName}" ?\n\n` +
-            `Cette action est IRRÉVERSIBLE et ne fonctionnera que si l'utilisateur n'a aucune activité enregistrée.\n\n` +
-            `Tapez "SUPPRIMER" pour confirmer.`
-        )
+        setSelectedUser(user)
+        setShowDeleteModal(true)
+    }
 
-        if (!confirmed) return
+    const handleDeleteConfirm = async () => {
+        if (!selectedUser) return
 
-        // Double confirmation
-        const confirmationText = prompt('Tapez "SUPPRIMER" en majuscules pour confirmer :')
-        if (confirmationText !== 'SUPPRIMER') {
-            alert('Suppression annulée')
-            return
-        }
-
-        const response = await userService.deleteUser(userId)
-        if (response.success) {
-            alert('✅ ' + response.message)
-            fetchData()
-        } else {
-            alert('❌ ' + response.message)
+        setDeleteLoading(true)
+        try {
+            const response = await userService.deleteUser(selectedUser.id)
+            if (response.success) {
+                showSuccess(`Utilisateur "${selectedUser.name}" supprimé avec succès`)
+                setShowDeleteModal(false)
+                fetchData()
+            } else {
+                showError(response.message)
+            }
+        } catch (error) {
+            console.error('Erreur:', error)
+            showError('Erreur lors de la suppression')
+        } finally {
+            setDeleteLoading(false)
         }
     }
 
     const handleChangePassword = (user: User) => {
-        // Permettre de changer n'importe quel mot de passe, y compris le sien
         setSelectedUser(user)
         setShowPasswordModal(true)
     }
@@ -147,12 +165,27 @@ export function UsersManagement() {
     const handleEdit = (user: User) => {
         // Empêcher l'admin de modifier son propre rôle
         if (isCurrentUser(user.id)) {
-            alert('ℹ️ Pour modifier votre profil, utilisez la page "Mon Profil"')
+            showError('Pour modifier votre profil, utilisez la page "Mon Profil"')
             return
         }
 
         setSelectedUser(user)
         setShowEditModal(true)
+    }
+
+    const handleViewDetails = (user: User) => {
+        setSelectedUser(user)
+        setShowDetailsModal(true)
+    }
+
+    const showSuccess = (message: string) => {
+        setSuccessMessage(message)
+        setTimeout(() => setSuccessMessage(''), 5000)
+    }
+
+    const showError = (message: string) => {
+        setErrorMessage(message)
+        setTimeout(() => setErrorMessage(''), 5000)
     }
 
     // Filtrage des utilisateurs
@@ -203,7 +236,7 @@ export function UsersManagement() {
                 </div>
                 <button
                     onClick={() => setShowCreateModal(true)}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-lg hover:opacity-90 transition"
+                    className={`${theme.button.base} ${theme.button.primary}`}
                 >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -211,6 +244,25 @@ export function UsersManagement() {
                     Nouvel Utilisateur
                 </button>
             </div>
+
+            {/* Messages de notification */}
+            {successMessage && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center gap-3">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {successMessage}
+                </div>
+            )}
+
+            {errorMessage && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-3">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {errorMessage}
+                </div>
+            )}
 
             {/* Statistiques */}
             {stats && (
@@ -353,6 +405,16 @@ export function UsersManagement() {
                                         <td className="py-3 px-4">
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
+                                                    onClick={() => handleViewDetails(user)}
+                                                    className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition"
+                                                    title="Voir détails"
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                </button>
+                                                <button
                                                     onClick={() => handleEdit(user)}
                                                     disabled={isCurrentUser(user.id)}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
@@ -391,7 +453,7 @@ export function UsersManagement() {
                                                     )}
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(user.id, user.name)}
+                                                    onClick={() => handleDeleteClick(user)}
                                                     disabled={isCurrentUser(user.id)}
                                                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
                                                     title={isCurrentUser(user.id) ? "Vous ne pouvez pas vous supprimer" : "Supprimer"}
@@ -437,6 +499,27 @@ export function UsersManagement() {
                         setShowPasswordModal(false)
                         setSelectedUser(null)
                     }}
+                />
+            )}
+
+            {showDetailsModal && selectedUser && (
+                <UserDetailsModal
+                    isOpen={showDetailsModal}
+                    onClose={() => {
+                        setShowDetailsModal(false)
+                        setSelectedUser(null)
+                    }}
+                    user={selectedUser}
+                />
+            )}
+
+            {showDeleteModal && selectedUser && (
+                <DeleteUserModal
+                    isOpen={showDeleteModal}
+                    onClose={() => setShowDeleteModal(false)}
+                    onConfirm={handleDeleteConfirm}
+                    user={selectedUser}
+                    loading={deleteLoading}
                 />
             )}
         </div>
