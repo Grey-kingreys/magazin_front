@@ -283,8 +283,29 @@ export function Navbar() {
                                     <a href="#produits" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
                                         📦 Produits
                                     </a>
-                                    <a href="#categories" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                    <a href="/categories" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
                                         🏷️ Catégories
+                                    </a>
+                                    <a href="#mouvements" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                        🔄 Mouvements
+                                    </a>
+                                    <a href="/suppliers" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                        🚚 Fournisseurs
+                                    </a>
+                                </>
+                            )}
+
+                            {hasAccess(['ADMIN']) && (
+                                <>
+                                    <div className="px-4 py-2 text-xs text-blue-200 font-semibold uppercase">Admin</div>
+                                    <a href="/users" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                        👥 Utilisateurs
+                                    </a>
+                                    <a href="/stores" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                        🏪 Magasins
+                                    </a>
+                                    <a href="#categories" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                        📊 Rapports
                                     </a>
                                 </>
                             )}
