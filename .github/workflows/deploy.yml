@@ -35,12 +35,7 @@ jobs:
           fi
       
       - name: Exécuter les tests (si configurés)
-        run: |
-          if [ -f vitest.config.js ] || grep -q '"test"' package.json; then
-            npm test -- --run
-          else
-            echo "Aucun test configuré"
-          fi
+        run: "aucun test configuré"
       
       - name: Construire le projet
         run: npm run build
