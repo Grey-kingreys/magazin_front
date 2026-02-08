@@ -140,13 +140,13 @@ export function Navbar() {
                                         <a href="#produits" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             📦 Produits
                                         </a>
-                                        <a href="#categories" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                        <a href="/categories" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             🏷️ Catégories
                                         </a>
                                         <a href="#mouvements" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             🔄 Mouvements
                                         </a>
-                                        <a href="#fournisseurs" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                        <a href="/suppliers" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             🚚 Fournisseurs
                                         </a>
                                     </div>

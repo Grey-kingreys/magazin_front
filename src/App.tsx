@@ -7,13 +7,17 @@ import { Dashboard } from './pages/dashboard/Dashboard'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import './App.css'
 
-// NOUVEAUX IMPORTS
+// Gestion des utilisateurs
 import { UsersManagement } from './pages/users/UsersManagement'
 import { UserProfile } from './pages/profile/UserProfile'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { EditProfile } from './components/profile/EditProfile'
 import { StoresManagement } from './pages/stores/StoresManagement'
+
+// NOUVEAUX IMPORTS - Catégories et Fournisseurs
+import { CategoriesManagement } from './pages/categories/CategoriesManagement'
+import { SuppliersManagement } from './pages/suppliers/SuppliersManagement'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -63,7 +67,7 @@ function App() {
           </ProtectedRoute>
         )
 
-      // NOUVEAU - Page de gestion des utilisateurs (Admin uniquement)
+      // Gestion des utilisateurs (Admin uniquement)
       case '/users':
         return (
           <ProtectedRoute>
@@ -75,7 +79,7 @@ function App() {
           </ProtectedRoute>
         )
 
-      // NOUVEAU - Page de profil utilisateur (Tous les utilisateurs)
+      // Page de profil utilisateur (Tous les utilisateurs)
       case '/profile':
         return (
           <ProtectedRoute>
@@ -87,7 +91,7 @@ function App() {
           </ProtectedRoute>
         )
 
-      // NOUVEAU - Page de modification du profil (Tous les utilisateurs)
+      // Page de modification du profil (Tous les utilisateurs)
       case '/profile/edit':
         return (
           <ProtectedRoute>
@@ -99,12 +103,37 @@ function App() {
           </ProtectedRoute>
         )
 
+      // Gestion des magasins
       case '/stores':
         return (
           <ProtectedRoute>
             <Navbar />
             <main>
               <StoresManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      // NOUVEAU - Gestion des catégories
+      case '/categories':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <CategoriesManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      // NOUVEAU - Gestion des fournisseurs
+      case '/suppliers':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <SuppliersManagement />
             </main>
             <Footer />
           </ProtectedRoute>
