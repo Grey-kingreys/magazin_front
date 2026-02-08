@@ -15,9 +15,13 @@ import { Footer } from './components/layout/Footer'
 import { EditProfile } from './components/profile/EditProfile'
 import { StoresManagement } from './pages/stores/StoresManagement'
 
-// NOUVEAUX IMPORTS - Catégories et Fournisseurs
+// Catégories et Fournisseurs
 import { CategoriesManagement } from './pages/categories/CategoriesManagement'
 import { SuppliersManagement } from './pages/suppliers/SuppliersManagement'
+
+// Produits et Stocks
+import { ProductsManagement } from './pages/products/ProductsManagement'
+import { StocksManagement } from './pages/stocks/StocksManagement'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -115,7 +119,7 @@ function App() {
           </ProtectedRoute>
         )
 
-      // NOUVEAU - Gestion des catégories
+      // Gestion des catégories
       case '/categories':
         return (
           <ProtectedRoute>
@@ -127,13 +131,37 @@ function App() {
           </ProtectedRoute>
         )
 
-      // NOUVEAU - Gestion des fournisseurs
+      // Gestion des fournisseurs
       case '/suppliers':
         return (
           <ProtectedRoute>
             <Navbar />
             <main>
               <SuppliersManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      // 🆕 Gestion des produits
+      case '/products':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <ProductsManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      // 🆕 Gestion des stocks
+      case '/stocks':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <StocksManagement />
             </main>
             <Footer />
           </ProtectedRoute>

@@ -137,7 +137,7 @@ export function Navbar() {
                                 </button>
                                 {activeDropdown === 'stock' && (
                                     <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
-                                        <a href="#produits" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                        <a href="/products" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             📦 Produits
                                         </a>
                                         <a href="/categories" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
@@ -148,6 +148,9 @@ export function Navbar() {
                                         </a>
                                         <a href="/suppliers" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             🚚 Fournisseurs
+                                        </a>
+                                        <a href="/stocks" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                            📊 Stocks
                                         </a>
                                     </div>
                                 )}
@@ -280,7 +283,7 @@ export function Navbar() {
                             {hasAccess(['ADMIN', 'MANAGER', 'STORE_MANAGER']) && (
                                 <>
                                     <div className="px-4 py-2 text-xs text-blue-200 font-semibold uppercase">Stock</div>
-                                    <a href="#produits" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                    <a href="/products" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
                                         📦 Produits
                                     </a>
                                     <a href="/categories" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
