@@ -59,7 +59,7 @@ export function Dashboard() {
     // Affichage pendant le chargement
     if (loading) {
         return (
-            <div className={`min-h-screen ${theme.background.dashboard} flex items-center justify-center`}>
+            <div className={`min-h-screen ${theme.background.dashboard} flex items-center justify-center px-4`}>
                 <div className="text-center">
                     <svg className="animate-spin h-12 w-12 text-indigo-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -86,8 +86,8 @@ export function Dashboard() {
                 // Vérifier que l'utilisateur a un store
                 if (!user.storeId || !user.store) {
                     return (
-                        <div className="text-center py-12">
-                            <div className="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded-lg mb-4">
+                        <div className="text-center py-12 px-4">
+                            <div className="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded-lg mb-4 max-w-md mx-auto">
                                 <p className="font-bold">Configuration requise</p>
                                 <p>Votre compte n'est associé à aucun magasin. Contactez l'administrateur.</p>
                             </div>
@@ -100,8 +100,8 @@ export function Dashboard() {
                 // Vérifier que l'utilisateur a un store
                 if (!user.storeId || !user.store) {
                     return (
-                        <div className="text-center py-12">
-                            <div className="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded-lg mb-4">
+                        <div className="text-center py-12 px-4">
+                            <div className="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded-lg mb-4 max-w-md mx-auto">
                                 <p className="font-bold">Configuration requise</p>
                                 <p>Votre compte n'est associé à aucun magasin. Contactez l'administrateur.</p>
                             </div>
@@ -119,7 +119,7 @@ export function Dashboard() {
     return (
         <div className={`min-h-screen ${theme.background.dashboard}`}>
             <Navbar />
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 w-full overflow-x-hidden">
                 {renderDashboard()}
             </main>
             <Footer />
