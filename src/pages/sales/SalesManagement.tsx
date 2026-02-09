@@ -89,7 +89,6 @@ export function SalesManagement() {
     const [searchTerm, setSearchTerm] = useState('')
     const [filterStore, setFilterStore] = useState('')
     const [filterStatus, setFilterStatus] = useState('')
-    const [filterPayment, setFilterPayment] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
 

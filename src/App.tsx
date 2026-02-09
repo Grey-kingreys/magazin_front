@@ -24,6 +24,8 @@ import { ProductsManagement } from './pages/products/ProductsManagement'
 import { StocksManagement } from './pages/stocks/StocksManagement'
 import { StockMovementsManagement } from './pages/stock-movements/StockMovementsManagement'
 import { SalesManagement } from './pages/sales/SalesManagement'
+import { CashRegisterManagement } from './pages/cash-register/CashRegisterManagement'
+import { ExpenseManagement } from './pages/expense/ExpenseManagement'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -189,6 +191,30 @@ function App() {
             <Navbar />
             <main>
               <SalesManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      // Gestion des caisses
+      case '/cash-registers':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <CashRegisterManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      // Comptabilité - Dépenses
+      case '/expenses':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <ExpenseManagement />
             </main>
             <Footer />
           </ProtectedRoute>
