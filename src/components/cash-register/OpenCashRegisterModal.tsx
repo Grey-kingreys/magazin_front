@@ -15,7 +15,7 @@ interface OpenCashRegisterModalProps {
 export function OpenCashRegisterModal({ onClose, onSuccess }: OpenCashRegisterModalProps) {
     const [formData, setFormData] = useState({
         storeId: '',
-        openingAmount: '',
+        openingAmount: '0',
         notes: ''
     })
     const [stores, setStores] = useState<Store[]>([])
@@ -56,7 +56,7 @@ export function OpenCashRegisterModal({ onClose, onSuccess }: OpenCashRegisterMo
         }
 
         if (!formData.openingAmount || parseFloat(formData.openingAmount) < 0) {
-            setError('Le montant d\'ouverture doit être positif')
+            setError("Le montant d'ouverture doit être positif")
             return
         }
 
@@ -138,7 +138,7 @@ export function OpenCashRegisterModal({ onClose, onSuccess }: OpenCashRegisterMo
 
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Montant d'ouverture (GNF) *
+                            Montant d'ouverture (GNF)
                         </label>
                         <input
                             type="number"
@@ -147,13 +147,27 @@ export function OpenCashRegisterModal({ onClose, onSuccess }: OpenCashRegisterMo
                             onChange={handleChange}
                             required
                             min="0"
-                            step="0.01"
+                            step="1"
                             className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                            placeholder="100000"
+                            placeholder="0"
                         />
                         <p className="text-xs text-slate-500 mt-1">
                             Montant en espèces présent dans la caisse au démarrage
                         </p>
+                    </div>
+
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                        <div className="flex items-start gap-2">
+                            <svg className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <p className="text-xs text-blue-700">
+                                    <span className="font-medium">Conseil :</span> Démarrez à 0 GNF pour une gestion simplifiée. 
+                                    L'argent des ventes en espèces sera automatiquement crédité au magasin.
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <div>

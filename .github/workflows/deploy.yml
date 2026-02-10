@@ -1,4 +1,4 @@
-name: React Vite CI/CD
+name: multi-magasins CI/CD
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-and-build:
-    name: Test & Build
+    name: Build
     runs-on: ubuntu-latest
     
     strategy:
@@ -23,29 +23,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: npm
       
       - name: Installer les dépendances
         run: npm ci
       
-      - name: Vérifier le linting (si configuré)
+      - name: Vérifier le linting (optionnel)
         run: |
           if [ -f .eslintrc.js ] || [ -f .eslintrc.json ]; then
-            npm run lint || echo "Linting échoué, mais continuation du workflow"
+            npm run lint || echo "Lint ignoré"
+          else
+            echo "Aucun lint configuré"
           fi
       
-      - name: Exécuter les tests (si configurés)
-        run: "aucun test configuré"
-      
-      - name: Construire le projet
+      - name: Build du projet
         run: npm run build
       
-      - name: Upload les artefacts de build
+      - name: Upload les artefacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: dist/
           retention-days: 1
+
 
   deploy:
     name: Deploy to Vercel
