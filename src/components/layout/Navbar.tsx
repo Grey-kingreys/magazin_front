@@ -180,7 +180,7 @@ export function Navbar() {
                                         <a href="#revenues" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             💰 Recettes
                                         </a>
-                                        <a href="/financial-reports" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                        <a href="/reports" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             📊 Rapports
                                         </a>
                                     </div>
@@ -221,7 +221,7 @@ export function Navbar() {
                                         <a href="/stores" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             🏪 Magasins
                                         </a>
-                                        <a href="#rapports" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+                                        <a href="/reports" className="block px-4 py-2 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
                                             📊 Rapports
                                         </a>
                                     </div>
@@ -337,7 +337,7 @@ export function Navbar() {
                                     <a href="/stores" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
                                         🏪 Magasins
                                     </a>
-                                    <a href="#categories" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
+                                    <a href="/reports" className="block px-4 py-2 text-sm text-blue-100 hover:bg-white/10 rounded-lg transition pl-8">
                                         📊 Rapports
                                     </a>
                                 </>

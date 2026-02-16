@@ -26,6 +26,7 @@ import { StockMovementsManagement } from './pages/stock-movements/StockMovements
 import { SalesManagement } from './pages/sales/SalesManagement'
 import { CashRegisterManagement } from './pages/cash-register/CashRegisterManagement'
 import { ExpenseManagement } from './pages/expense/ExpenseManagement'
+import { ReportsManagement } from './pages/report/ReportsManagement'
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
@@ -215,6 +216,17 @@ function App() {
             <Navbar />
             <main>
               <ExpenseManagement />
+            </main>
+            <Footer />
+          </ProtectedRoute>
+        )
+
+      case '/reports':
+        return (
+          <ProtectedRoute>
+            <Navbar />
+            <main>
+              <ReportsManagement />
             </main>
             <Footer />
           </ProtectedRoute>
